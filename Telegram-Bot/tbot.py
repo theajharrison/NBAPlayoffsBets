@@ -37,7 +37,7 @@ async def caps(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=text_caps)
 
 async def call(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    team_name = update.message.text.replace('/call', '').strip()
+    team_name = update.message.text
     date_time = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
     user = update.effective_user.full_name
 
@@ -55,12 +55,12 @@ async def call(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     application = ApplicationBuilder().token(API_TOKEN).build()
     start_handler = CommandHandler('start', start)
-    echo_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), echo)
+    # echo_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), echo)
     caps_handler = CommandHandler('caps', caps)
-    call_handler = CommandHandler('call', call)
+    call_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), call)
 
     application.add_handler(start_handler)
-    application.add_handler(echo_handler)
+    # application.add_handler(echo_handler)
     application.add_handler(caps_handler)
     application.add_handler(call_handler)
     application.run_polling()
